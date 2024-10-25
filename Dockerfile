@@ -1,11 +1,19 @@
-FROM python:3.10.0
+FROM python:3.11-bookworm
 
 WORKDIR /app
 
-ADD requirement.txt/app
+COPY . /app
+
+ADD requirements.txt /app/
+
+RUN apt-get -y update && apt-get -y install && apt-get clean
 
 RUN python -m pip install --upgrade pip
 
-RUN pip install requirement.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-CMD ["uvicorn","main","app"]
+# RUN ["python", "-c", "import nltk; nltk.download('stopwords')"]
+
+# RUN ["python", "-c", "import nltk; nltk.download('punkt')"]
+
+CMD ["python", "main.py"]
